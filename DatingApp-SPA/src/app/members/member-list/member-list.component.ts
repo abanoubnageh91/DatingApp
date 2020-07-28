@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MemberListComponent implements OnInit {
   users: User[];
-  constructor(private userService: UserService, private alertifyService: AlertifyService, private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {

@@ -20,8 +20,11 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberListResolver } from './resolvers/member-list.resolver';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
+import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -37,7 +40,8 @@ export function tokenGetter() {
       MemberListComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailComponent
+      MemberDetailComponent,
+      MemberEditComponent
    ],
    imports: [
       BrowserModule,
@@ -59,7 +63,8 @@ export function tokenGetter() {
    providers: [
       ErrorInterceptorProvider,
       MemberListResolver,
-      MemberDetailResolver
+      MemberDetailResolver,
+      MemberEditResolver
    ],
    bootstrap: [
       AppComponent
