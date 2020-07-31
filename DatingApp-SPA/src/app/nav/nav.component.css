@@ -8,3 +8,7 @@ span img {
     border: 2px solid white;
     display: inline;
 }
+
+.dropdown-menu {
+    width: 100%;
+}
