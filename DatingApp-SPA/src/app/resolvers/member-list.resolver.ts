@@ -8,10 +8,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MemberListResolver implements Resolve<User[]>{
+    pageNumber = 1;
+    pageSize = 5;
+
     constructor(private userService: UserService, private alertifyService: AlertifyService, private router: Router) { }
 
-    resolve(): Observable<User[]> {
-        return this.userService.getUsers().pipe(
+    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
+        return this.userService.getUsers(this.pageNumber, this.pageSize).pipe(
             catchError(error => {
                 this.alertifyService.error(error);
                 this.router.navigate(['/home']);
