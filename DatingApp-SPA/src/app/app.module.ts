@@ -29,7 +29,9 @@ import { MemberListResolver } from './resolvers/member-list.resolver';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
-
+import { ListsResolver } from './resolvers/lists.resolver';
+import { MessagesResolver } from './resolvers/messages.resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -48,7 +50,8 @@ export function tokenGetter() {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      MemberMessagesComponent
    ],
    imports: [
       BrowserModule,
@@ -76,7 +79,9 @@ export function tokenGetter() {
       ErrorInterceptorProvider,
       MemberListResolver,
       MemberDetailResolver,
-      MemberEditResolver
+      MemberEditResolver,
+      ListsResolver,
+      MessagesResolver
    ],
    bootstrap: [
       AppComponent
