@@ -66,9 +66,15 @@ namespace DatingApp.API.Data
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(int id, bool isCurrentUser)
         {
-            var user = await dataContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var query = dataContext.Users.Include(u => u.Photos).AsQueryable();
+
+            if (isCurrentUser)
+                query = query.IgnoreQueryFilters();
+
+            var user = await query.FirstOrDefaultAsync(u => u.Id == id);
+
             return user;
         }
 
@@ -79,7 +85,7 @@ namespace DatingApp.API.Data
 
         public async Task<Photo> GetPhoto(int id)
         {
-            return await dataContext.Photos.FirstOrDefaultAsync(p => p.Id == id);
+            return await dataContext.Photos.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Photo> GetMainPhotoForUser(int userId)

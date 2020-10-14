@@ -5,4 +5,5 @@ export interface Photo {
     dateAdded: Date;
     isMain: boolean;
     publicId: string;
+    isApproved: boolean;
 }

@@ -17,7 +17,6 @@ using DatingApp.API.Helpers;
 namespace DatingApp.API.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -52,7 +51,10 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await datingRepository.GetUser(id);
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
+            
+            var user = await datingRepository.GetUser(id, isCurrentUser);
+
             var userToReturn = mapper.Map<UserForDetailedDto>(user);
             return Ok(userToReturn);
         }
@@ -83,7 +85,7 @@ namespace DatingApp.API.Controllers
             if (like != null)
                 return BadRequest("You already liked this user.");
 
-            if (await datingRepository.GetUser(recipientId) == null)
+            if (await datingRepository.GetUser(recipientId, false) == null)
                 return NotFound();
 
             like = new Like

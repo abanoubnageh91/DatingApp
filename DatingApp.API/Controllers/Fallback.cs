@@ -15,6 +15,7 @@ using System.IO;
 
 namespace DatingApp.API.Controllers
 {
+    [AllowAnonymous]
     public class Fallback : Controller
     {
         public IActionResult Index()

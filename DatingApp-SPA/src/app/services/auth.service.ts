@@ -25,12 +25,11 @@ export class AuthService {
   }
   login(user: User) {
     return this.http.post(this.baseUrl + 'login', user).pipe(map((response: any) => {
-      const user = response;
-      if (user) {
-        localStorage.setItem('token', user.token);
-        localStorage.setItem('user', JSON.stringify(user.loggedUser));
-        this.decodedToken = this.jwtHelper.decodeToken(user.token);
-        this.loggedUser = user.loggedUser;
+      if (response) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        this.decodedToken = this.jwtHelper.decodeToken(response.token);
+        this.loggedUser = response.user;
         this.changeMemberPhoto(this.loggedUser.photoUrl);
       }
     }));
@@ -43,6 +42,18 @@ export class AuthService {
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  roleMatch(allowedRoles): boolean {
+    let isMatch = false;
+    const userRoles = this.decodedToken.role as Array<string>;
+    allowedRoles.forEach(element => {
+      if (userRoles.includes(element)) {
+        isMatch = true;
+        return;
+      }
+    });
+    return isMatch;
   }
 
 }

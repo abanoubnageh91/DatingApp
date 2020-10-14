@@ -1,9 +1,12 @@
 <div class="row">
-    <div class="col-sm-3 pb-2" *ngFor="let photo of photos">
-        <img src="{{photo.url}}" alt="" class="img-thumbnail p-1">
+    <div class="col-sm-3 img-wrapper pb-2" *ngFor="let photo of photos">
+        <img src="{{photo.url}}" alt="" [ngClass]="!photo.isApproved && 'not-approved'" class="img-thumbnail p-1">
+        <div class="text-center img-text" *ngIf="!photo.isApproved">
+            <span class="text-danger">Awaiting approval</span>
+        </div>
         <div class="text-center">
-            <button type="button" class="btn btn-sm btn-success active mr-1" *ngIf="!photo.isMain" (click)="setMainPhoto(photo)">Set Profile</button>
-            <button type="button" class="btn btn-sm btn-dnager" *ngIf="!photo.isMain" (click)="deletePhoto(photo.id)"><i class="fa fa-trash-o"></i></button>
+            <button type="button" class="btn btn-sm btn-success active mr-1" *ngIf="!photo.isMain && photo.isApproved" (click)="setMainPhoto(photo)">Set Profile</button>
+            <button type="button" class="btn btn-sm btn-dnager" *ngIf="!photo.isMain || !photo.isApproved" (click)="deletePhoto(photo.id)"><i class="fa fa-trash-o"></i></button>
         </div>
     </div>
 </div>

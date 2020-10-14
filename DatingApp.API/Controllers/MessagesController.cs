@@ -17,7 +17,6 @@ using DatingApp.API.Helpers;
 namespace DatingApp.API.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
     [ApiController]
     [Route("users/{userId}/messages")]
     public class MessagesController : ControllerBase
@@ -79,14 +78,14 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
-            var sender = await datingRepository.GetUser(userId);
+            var sender = await datingRepository.GetUser(userId, false);
 
             if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
             messageForCreationDto.SenderId = userId;
 
-            var recipient = await datingRepository.GetUser(messageForCreationDto.RecipientId);
+            var recipient = await datingRepository.GetUser(messageForCreationDto.RecipientId, false);
 
             if (recipient == null)
                 return BadRequest("Couldn't find user.");
