@@ -141,7 +141,7 @@ namespace DatingApp.API.Data
         {
             var messages = await dataContext.Messages
             .Where(m => m.SenderId == userId && !m.SenderDeleted && m.RecipientId == recipientId
-            || m.SenderId == recipientId && !m.RecipientDeleted && m.RecipientId == userId).OrderByDescending(m => m.MessageSent)
+            || m.SenderId == recipientId && !m.RecipientDeleted && m.RecipientId == userId).OrderBy(m => m.MessageSent)
             .ToListAsync();
 
             return messages;

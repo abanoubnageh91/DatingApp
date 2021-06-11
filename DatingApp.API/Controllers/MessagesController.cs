@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.Collections.Generic;
 using DatingApp.API.Helpers;
+using Microsoft.AspNetCore.SignalR;
+using DatingApp.API.HubConfig;
 
 namespace DatingApp.API.Controllers
 {
@@ -23,11 +25,13 @@ namespace DatingApp.API.Controllers
     {
         private readonly IDatingRepository datingRepository;
         private readonly IMapper mapper;
+        private readonly IHubContext<MessageHub> _hub;
 
-        public MessagesController(IDatingRepository authRepository, IMapper mapper)
+        public MessagesController(IDatingRepository authRepository, IMapper mapper, IHubContext<MessageHub> hub)
         {
             this.mapper = mapper;
             this.datingRepository = authRepository;
+            _hub = hub;
 
         }
 
@@ -97,6 +101,7 @@ namespace DatingApp.API.Controllers
             if (await datingRepository.SaveAll())
             {
                 var messageToReturn = mapper.Map<MessageToReturnDto>(message);
+                await _hub.Clients.All.SendAsync("transfermessagedata");
                 return CreatedAtRoute("GetMessage", new { userId, id = message.Id }, messageToReturn);
             }
 

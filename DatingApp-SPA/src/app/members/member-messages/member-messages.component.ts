@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AlertifyService } from 'src/app/services/alertify.service';
 import { UserService } from 'src/app/services/user.service';
 import { tap } from 'rxjs/operators';
+import {SignalRService} from 'src/app/services/signalR.service';
 
 @Component({
   selector: 'app-member-messages',
@@ -14,10 +15,15 @@ export class MemberMessagesComponent implements OnInit {
   @Input() recipientId: number;
   messages: Message[];
   newMessage: any = {};
-  constructor(private userService: UserService, private authService: AuthService, private alertifyService: AlertifyService) { }
+  constructor(private userService: UserService, private authService: AuthService, private alertifyService: AlertifyService,
+    public signalRService: SignalRService) { }
 
   ngOnInit() {
     this.loadMessages();
+    this.signalRService.startConnection();
+    this.signalRService.addTransferChartDataListener(()=>{
+      this.loadMessages();;
+    });
   }
 
   loadMessages() {

@@ -21,6 +21,7 @@
     "@angular/router": "~10.0.2",
     "@auth0/angular-jwt": "^5.0.1",
     "@kolkov/ngx-gallery": "^1.2.3",
+    "@microsoft/signalr": "^5.0.6",
     "alertifyjs": "^1.13.1",
     "bootstrap": "^4.5.0",
     "bootswatch": "^4.5.0",
