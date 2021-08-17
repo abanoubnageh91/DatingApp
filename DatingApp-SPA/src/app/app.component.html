@@ -1,2 +1,5 @@
 <app-nav></app-nav>
 <router-outlet></router-outlet>
+<div *ngIf="hasUpdate">
+    <button (click)="reloadSite()">Reload</button>
+</div>

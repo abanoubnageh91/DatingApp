@@ -38,6 +38,8 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 import { HasRoleDirective } from './_directives/hasRole.directive';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -85,7 +87,8 @@ export function tokenGetter() {
             allowedDomains: ['localhost:5000'],
             disallowedRoutes: ['localhost/auth']
          }
-      })
+      }),
+      ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
    ],
    providers: [
       ErrorInterceptorProvider,

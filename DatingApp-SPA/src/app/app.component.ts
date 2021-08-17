@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { SwUpdate } from '@angular/service-worker';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,9 @@ export class AppComponent implements OnInit {
 
   title = 'DatingApp-SPA';
   jwtHelper = new JwtHelperService();
-  constructor(public authService: AuthService) {
+  hasUpdate = false;
+  constructor(public authService: AuthService,
+    private swUpdate: SwUpdate,) {
 
   }
 
@@ -28,5 +32,21 @@ export class AppComponent implements OnInit {
       this.authService.changeMemberPhoto(loggedUser.photoUrl);
     }
 
+    // check for platform update
+    if (this.swUpdate.isEnabled) {
+      interval(6000).subscribe(() => this.swUpdate.checkForUpdate().then(() => {
+        // checking for updates
+        console.log('checking for updates');
+        
+      }));
+    }
+    this.swUpdate.available.subscribe(() => {
+      this.hasUpdate = true;
+    });
+
+  }
+
+  reloadSite(): void {
+    location.reload();
   }
 }
