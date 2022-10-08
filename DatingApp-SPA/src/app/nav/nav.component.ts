@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { AlertifyService } from '../services/alertify.service';
 import { Router } from '@angular/router';
+import { SignalRService } from '../services/signalR.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,10 +13,15 @@ export class NavComponent implements OnInit {
 
   model: any = {};
   photoUrl: string;
-  constructor(public authService: AuthService, private alertifyService: AlertifyService, private router: Router) { }
-
+  constructor(public authService: AuthService, private alertifyService: AlertifyService, 
+    private router: Router, public signalRService: SignalRService) { }
+  unreadCount:number = 0;
   ngOnInit() {
     this.authService.photoUrl.subscribe((photoUrl) => this.photoUrl = photoUrl);
+    this.signalRService.startConnection();
+    this.signalRService.addTransferChartDataListener(()=>{
+      this.unreadCount++;
+    });
   }
 
   login() {

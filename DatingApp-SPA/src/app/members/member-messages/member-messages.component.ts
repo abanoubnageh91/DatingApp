@@ -22,7 +22,7 @@ export class MemberMessagesComponent implements OnInit {
     this.loadMessages();
     this.signalRService.startConnection();
     this.signalRService.addTransferChartDataListener(()=>{
-      this.loadMessages();;
+      this.loadMessages();
     });
   }
 
