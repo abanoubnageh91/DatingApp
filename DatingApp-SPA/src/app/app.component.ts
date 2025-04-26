@@ -26,12 +26,13 @@ export class AppComponent implements OnInit {
       this.authService.decodedToken = this.jwtHelper.decodeToken(token);
     }
 
-    const loggedUser = JSON.parse(localStorage.getItem('user'));
+    const loggedUserJson = localStorage.getItem('user');
 
-    if (loggedUser) {
-      this.authService.loggedUser = loggedUser;
-      this.authService.changeMemberPhoto(loggedUser.photoUrl);
-    }
+    if (loggedUserJson) {
+    const loggedUser = JSON.parse(loggedUserJson);
+    this.authService.loggedUser = loggedUser;
+    this.authService.changeMemberPhoto(loggedUser.photoUrl);
+  }
 
     // check for platform update
     if (this.swUpdate.isEnabled) {
